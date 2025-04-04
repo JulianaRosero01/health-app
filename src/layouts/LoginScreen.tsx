@@ -15,8 +15,8 @@ export default function LoginScreen(){
     return <RegisterScreen onClose={()=> setShowRegister(false)}/>
   }
 
-  return(
-      <View style={styles.container}>
+return(
+  <View style={styles.container}>
     <Text style={styles.title}>Sign in</Text>
 
     <TextInput 
