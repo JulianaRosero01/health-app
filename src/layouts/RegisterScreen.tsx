@@ -1,8 +1,48 @@
 import React, { useState } from "react";
-import { supabase } from "../supabaseClient";
 import { View, Text, TextInput, TouchableOpacity, StyleSheet } from "react-native";
+import { supabase } from "../supabaseClient";
 
 export default function RegisterScreen({ onClose }: any) {
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [fullname, setFullName] = useState("");
+    const [mobilephone, setMobilePhone] = useState("");
+    const [Loading, setLoading] = useState("");
+    const [errorMessage, setErrorMessage] = useState("");
+
+    const handleRegister = async () => {
+        setLoading(true);
+        setErrorMessage("");
+
+        const{data, error} = await supabase.auth.signUp({
+            email, 
+            password
+        });
+        
+        if(error){
+            setErrorMessage(error.message);
+            setLoading(false);
+            return;
+        }
+     
+        //Insert data into Supabase table
+        const { error: InsertError} = await supabase.from("users").Insert([
+            {
+                email: email, 
+                password: password,
+                fullname: fullname,
+                mobile_phone: mobilephone
+            }
+        ]);
+        setLoading(false);
+        if(InsertError){
+            setErrorMessage(InsertError.message);
+        }else{
+            alert("User has been created successfully");
+            onClose();
+        }
+    }       
+
     return (
         <View style={styles.container}>
             <Text style={styles.title}>Sign up</Text>
@@ -16,7 +56,7 @@ export default function RegisterScreen({ onClose }: any) {
                 placeholder="your fullname" />
 
             <TextInput style={styles.input}
-                placeholder="(+57)0000000000" />
+                placeholder="(+57)3333444400" />
 
             <TouchableOpacity style={styles.button}>
                 <Text style={styles.buttonText}>Register</Text>
