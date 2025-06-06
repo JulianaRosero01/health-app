@@ -1,5 +1,6 @@
-import { Stack } from "expo-router";
+import * as React from "react";
+import { Tabs } from "expo-router";
 
-export default function RootLayout() {
-  return <Stack />;
+export default function Layout() {
+  return <Tabs />;
 }
